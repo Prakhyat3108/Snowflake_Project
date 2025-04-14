@@ -35,6 +35,7 @@ Each record contains:
 
 **#SQL Scripts**
 --Create Database, Schema, and Stage
+
 CREATE OR REPLACE DATABASE WATER_POLLUTION_DB;
 USE DATABASE WATER_POLLUTION_DB;
 
@@ -42,20 +43,24 @@ CREATE OR REPLACE SCHEMA WATER_DATA;
 USE SCHEMA WATER_DATA;
 
 -- Create an internal stage to hold the JSON file
+
 CREATE OR REPLACE STAGE WATER_STAGE;
 
 -- Create table
+
 CREATE OR REPLACE TABLE WATER_POLLUTION_RAW (
     json_data VARIANT
 );
 
 -- Load JSON Data into Raw Table
+
 COPY INTO WATER_POLLUTION_RAW
 FROM @WATER_STAGE/csvjson.json
 FILE_FORMAT = (TYPE = 'JSON');
 
 
 ---Create Table to push data
+
 CREATE OR REPLACE TABLE WATER_POLLUTION_STATS AS
 SELECT
     value:"Country"::STRING AS Country,
@@ -86,16 +91,19 @@ FROM WATER_POLLUTION_RAW,
      LATERAL FLATTEN(input => json_data);
 
 --Copy json data into table
+
 COPY INTO WATER_DATA.WATER_POLLUTION_STATS
 FROM @WATER_DATA.WATER_STAGE/cvjson.csv
 FILE_FORMAT = (TYPE = 'CSV' FIELD_OPTIONALLY_ENCLOSED_BY = '"' SKIP_HEADER = 1);
 
 --check
+
 SELECT * FROM WATER_DATA.WATER_POLLUTION_STATS LIMIT 10;
 
 
 --SQL Queries for Insights
 --Average Water Quality Indicators by Country
+
 SELECT 
     Country,
     AVG(Contaminant_Level_ppm) AS Avg_Contaminant,
