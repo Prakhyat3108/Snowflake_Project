@@ -32,17 +32,6 @@ Each record contains:
 - **Demographics & Environment**  
   (country, region, population density, GDP, urbanization, rainfall)
 
-Example JSON snippet:
-```json
-{
-  "Country": "Mexico",
-  "Year": 2015,
-  "Water Source Type": "Lake",
-  "Contaminant Level (ppm)": 0.34,
-  "pH Level": 7.1,
-  "Diarrheal Cases per 100,000 people": 2600,
-  ...
-}
 
 **#SQL Scripts**
 --Create Database, Schema, and Stage
