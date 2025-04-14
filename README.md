@@ -32,7 +32,7 @@ Each record contains:
 - **Demographics & Environment**  
   (country, region, population density, GDP, urbanization, rainfall)
 
-
+**--Click here to download SQL Scripts : https://github.com/Prakhyat3108/Snowflake_Project/blob/main/SQL%20Scripts.zip**
 **#SQL Scripts**
 **--Create Database, Schema, and Stage**
 
