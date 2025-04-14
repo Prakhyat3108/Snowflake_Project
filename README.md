@@ -34,7 +34,7 @@ Each record contains:
 
 
 **#SQL Scripts**
---Create Database, Schema, and Stage
+**--Create Database, Schema, and Stage**
 
 CREATE OR REPLACE DATABASE WATER_POLLUTION_DB;
 USE DATABASE WATER_POLLUTION_DB;
@@ -46,22 +46,23 @@ USE SCHEMA WATER_DATA;
 
 CREATE OR REPLACE STAGE WATER_STAGE;
 
--- Create table
+**-- Create table**
 
 CREATE OR REPLACE TABLE WATER_POLLUTION_RAW (
     json_data VARIANT
 );
 
--- Load JSON Data into Raw Table
+**-- Load JSON Data into Raw Table**
 
 COPY INTO WATER_POLLUTION_RAW
 FROM @WATER_STAGE/csvjson.json
 FILE_FORMAT = (TYPE = 'JSON');
 
 
----Create Table to push data
+**---Create Table to push data**
 
 CREATE OR REPLACE TABLE WATER_POLLUTION_STATS AS
+
 SELECT
     value:"Country"::STRING AS Country,
     value:"Region"::STRING AS Region,
@@ -90,19 +91,19 @@ SELECT
 FROM WATER_POLLUTION_RAW,
      LATERAL FLATTEN(input => json_data);
 
---Copy json data into table
+**--Copy json data into table**
 
 COPY INTO WATER_DATA.WATER_POLLUTION_STATS
 FROM @WATER_DATA.WATER_STAGE/cvjson.csv
 FILE_FORMAT = (TYPE = 'CSV' FIELD_OPTIONALLY_ENCLOSED_BY = '"' SKIP_HEADER = 1);
 
---check
+**--check**
 
 SELECT * FROM WATER_DATA.WATER_POLLUTION_STATS LIMIT 10;
 
 
---SQL Queries for Insights
---Average Water Quality Indicators by Country
+**--SQL Queries for Insights
+--Average Water Quality Indicators by Country**
 
 SELECT 
     Country,
@@ -113,7 +114,8 @@ SELECT
 FROM WATER_DATA.WATER_POLLUTION_STATS
 GROUP BY Country;
 
--- Disease Cases vs. Water Quality
+**-- Disease Cases vs. Water Quality**
+
 SELECT 
     Region,
     AVG(Contaminant_Level_ppm) AS Avg_Contaminant,
@@ -123,7 +125,8 @@ SELECT
 FROM WATER_DATA.WATER_POLLUTION_STATS
 GROUP BY Region;
 
---Correlation of Access to Clean Water and Health
+**--Correlation of Access to Clean Water and Health**
+
 SELECT 
     Country,
     AVG(Access_to_Clean_Water_Percent) AS Access_Clean_Water,
